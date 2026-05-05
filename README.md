@@ -15,7 +15,7 @@ Here, we present a systematic and comparative analysis of nematic order and tiss
 </p>
 
 The pipeline illustrates the full workflow used in this repository:
-1. Extraction of orientation fields from microscopy images  
+1. Extraction of orientation fields from microscopy **square** images  
 2. Computation of nematic order and defect detection, Quantification of defect dynamics  
 3. Velocity-field analysis using PIV and quantification of cell flow around defects   
 
