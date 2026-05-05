@@ -27,10 +27,10 @@
 
 
 
-addpath("Path to \Functions")
+addpath("C:\Users\bembertn\Downloads\Test folder Nematic paper\Functions")
 
  
-Mainsubdir="Path to \Cell data";
+Mainsubdir="C:\Users\bembertn\Downloads\Test folder Nematic paper\Confluence +2 data";
 
 
 
@@ -844,7 +844,7 @@ arrowScale = 30;
 
 
  % --- Champ d'orientation sous-échantillonné ---
-            step = 20;
+            step = 10;
 
             [X,Y] = meshgrid((1:Q_cols)*Grid_size,(1:Q_rows)*Grid_size);
             U = cos(OrientationMat)';
@@ -937,7 +937,7 @@ if Dynamic_analysis== 1
 %  Master Script: Defect Analysis (tracking) 
 %  =========================================
 
-clearvars -except Mainsubdir outputFile 
+clearvars -except Mainsubdir outputFile Dynamic_analysis
  clc; close all;
 
 % -------------------------------
