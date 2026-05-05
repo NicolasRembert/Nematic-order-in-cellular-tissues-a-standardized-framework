@@ -27,10 +27,10 @@
 
 
 
-addpath("C:\Users\bembertn\Downloads\Test folder Nematic paper\Functions")
+addpath("Path to your \Functions")
 
  
-Mainsubdir="C:\Users\bembertn\Downloads\Test folder Nematic paper\Confluence +2 data";
+Mainsubdir="Path to \ Confluence 48h cell data";
 
 
 
