@@ -1211,7 +1211,7 @@ end
 
             [All_u_ori, All_v_ori, All_xBox_ori, All_yBox_ori] = analyze_defects_shape(posPOSx,posPOSy,posNEGx,posNEGy,OrientationMat_list,Phi_list,'pos'); %Extract cells which contain a box of vetors extarcted around the center of each positive defects 
 
-            [Xq,Yq,nematicMat,gridStep,count_ori] = average_nematic_shape(All_u_ori,All_v_ori,All_xBox_ori,All_yBox_ori,Grid_size); %Averages all the rotated defect and realigns the averaged matrix on the same grid of coordinate 
+            [Xq,Yq,nematicMat,gridStep,count_ori] = average_nematic_shape(All_u_ori,All_v_ori,All_xBox_ori,All_yBox_ori,1); %Averages all the rotated defect and realigns the averaged matrix on the same grid of coordinate 
 
             [ThetaValues, PhiValues, ThetaNeg, PhiNeg] = AngleDistributionv2_withCoords(nematicMat,Xq,Yq,0,0); %Computes the shape of defect and distribution of Theta and Phi , ThetaNeg, PhiNeg contain negative distribution of angles while ThetaValues, PhiValues contain both positive and negative PhiValues  
 
