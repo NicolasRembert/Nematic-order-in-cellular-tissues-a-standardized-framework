@@ -10,7 +10,7 @@ Here, we present a systematic and comparative analysis of nematic order and tiss
 
 ## Summary figure
 
-<img src="Figure/Summary figure.pdf" width="900">
+![Summary figure](Figure/Summary%20figure.pdf)
 
 The pipeline illustrates the full workflow used in this repository:
 1. Extraction of orientation fields from microscopy images  
