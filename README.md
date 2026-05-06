@@ -21,5 +21,75 @@ The pipeline illustrates the full workflow used in this repository:
 
 ---
 
-## Repository structure
+## Analysis workflow
+
+The typical workflow is:
+
+### 1. Orientation field generation
+Orientation vector fields are computed from microscopy images using **ImageJ / OrientationJ**,and then saved as csv. Multiple csvs can be generated with varying **feature size** and **Down-sampling** size.
+
+### 2. Coherency analysis
+Parameter exploration to determine optimal settings for OrientationJ analysis.
+
+### 3. Nematic analysis
+Using MATLAB:
+
+- computation of nematic correlation length
+- computation of nematic order
+- detection of ±1/2 topological defects
+- defect tracking in time series
+- defect densities
+- nearest neighbor distance
+- TAMSD (time-averaged mean square displacement)
+
+### 4. Flow analysis around defects
+Velocity fields obtained with **PIVlab** are used to compute:
+
+- velocity magnitude around defects
+- velocity divergence
+
+
+
+
+### Main scripts
+
+**Python**
+
+`Generating vector fields on stitched.py`  
+Generates nematic orientation vector fields from microscopy images using outputs from **ImageJ / OrientationJ**, user can change the two main parameters "feature size" and "Down-sampling factor" by varying respectively the **tensor** and **grid** variables in the script. This code saves the csv results tables with the formatting required for further analysis with MATLAB.
+
+
+
+**MATLAB**
+
+`coherency_analysis.py`  
+Allows visualization and quantification of the **coherency ** as a function of feature size set on OrientationJ .
+
+`Main_tracking_defects.m`  
+
+- detection of topological defects
+- tracking of defects in time series
+
+`Velocity_around_defect_analysis.m`  
+Computes the **dynamics of cells around topological defects** using velocity fields obtained from **PIVlab**.
+
+---
+
+---
+
+## Example datasets
+
+A small dataset is included in the repository **Confluence 48h cell data** to reproduce the **defect dynamics analysis**.
+
+### Additional datasets
+
+Due to file size limitations, additional datasets are hosted externally.
+
+**Coherency test dataset**
+
+[Download dataset](https://unigech-my.sharepoint.com/:f:/g/personal/nicolas_rembert_unige_ch/IgByzd2_TnuBR5xRfTa7xljSAeBPBF1q9fbGErQP2N1I1N0?e=GhGUhw)
+
+**PIV dataset for defect dynamics**
+
+[Download dataset](https://unigech-my.sharepoint.com/:f:/g/personal/nicolas_rembert_unige_ch/IgCJfiGwHFVERppY6ZOl10-JAX5diKrUf5sHy14f4P0pM-E?e=Ux87K5)
 
