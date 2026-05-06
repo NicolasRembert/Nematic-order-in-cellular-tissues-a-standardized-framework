@@ -63,7 +63,7 @@ Generates nematic orientation vector fields from microscopy images using outputs
 **MATLAB**
 
 `coherency_analysis.py`  
-Allows visualization and quantification of the **coherency ** as a function of feature size set on OrientationJ .
+Allows visualization and quantification of the **coherency** as a function of feature size set on OrientationJ .
 
 `Main_tracking_defects.m`  
 
