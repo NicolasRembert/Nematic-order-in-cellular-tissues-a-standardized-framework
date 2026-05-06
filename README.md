@@ -87,9 +87,9 @@ Due to file size limitations, additional datasets are hosted externally.
 
 **Coherency test dataset**
 
-[Download dataset](https://unigech-my.sharepoint.com/:f:/g/personal/nicolas_rembert_unige_ch/IgByzd2_TnuBR5xRfTa7xljSAeBPBF1q9fbGErQP2N1I1N0?e=GhGUhw)
+[Download dataset](https://drive.switch.ch/index.php/s/s3NtlIEZ17n7KVl)
 
 **PIV dataset for defect dynamics**
 
-[Download dataset](https://unigech-my.sharepoint.com/:f:/g/personal/nicolas_rembert_unige_ch/IgCJfiGwHFVERppY6ZOl10-JAX5diKrUf5sHy14f4P0pM-E?e=Ux87K5)
+[Download dataset](https://drive.switch.ch/index.php/s/ajCHMFG8D5xC6yB)
 
