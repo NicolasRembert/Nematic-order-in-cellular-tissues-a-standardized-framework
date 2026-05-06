@@ -119,7 +119,9 @@ Number of neighboring defect nodes that are merged when computing the center of 
 Size of the interrogation window used in Particle Image Velocimetry (PIVlab) to compute velocity vectors.
 
 **Overlap size**  
+
 Overlap between adjacent PIV interrogation windows. Increasing overlap improves spatial continuity of the velocity field but increases computational cost.
+
 ---
 
 ## Example datasets
@@ -156,8 +158,11 @@ Due to file size limitations, additional datasets are hosted externally.
 ## Authors
 
 Nicolas Rembert (contact : nicolas.rembert@unige.ch)
+
 Mathieu Dedenon
+
 Aurélien Roux
+
 Claire Dessalles
 
 ## License
