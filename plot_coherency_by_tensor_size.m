@@ -9,7 +9,7 @@ set(groot,'defaultTextFontWeight','bold')
 % ============================================================
 % PATH
 % ============================================================
-mainFolder = 'C:\Users\bembertn\Downloads\Test folder Nematic paper\Cohenrecy data';
+mainFolder = 'Path to \Coherency data';
 searchSubfolders = false; % Change to True if your csv are regrouped by subfolders example A02 -B02-C02 , to false if they are all in the cell type folder 
 
 % ============================================================
