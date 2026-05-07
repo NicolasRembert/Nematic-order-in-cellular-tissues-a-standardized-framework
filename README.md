@@ -92,14 +92,10 @@ Spatial downsampling factor applied to the orientation field to reduce resolutio
 
 ---
 
-### Orientation field discretization
+### Defect detection
 
 **Neighborhood size (Ns)**  
 Spatial neighborhood used to compute nematic order parameters, usually set to 1.
-
----
-
-### Defect detection
 
 **Charge box size (c)**  
 Size of the box used to compute the winding number when detecting topological defects.
