@@ -934,7 +934,7 @@ Results_nematics.Parameters.Downsampling = gridlist;
 Results_nematics.Parameters.OrderThreshold = qtreshlist;
 Results_nematics.Parameters.MinOrderDistance = minorddistlist;
 
-Results_nematics.Statistics.CorrelationLength = expxcut_list;
+Results_nematics.Statistics.CorrelationLength = expxcutlist;
 Results_nematics.Statistics.DefectDensity = defectdenslist;
 
 Results_nematics.Defects.NumPositive = numposlist;
