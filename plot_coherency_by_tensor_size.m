@@ -147,7 +147,7 @@ grid off
 % ============================================================
 % LEGEND
 % ============================================================
-legend(legendHandles, legendNames,'Location','best')
+legend(legendHandles, legendNames,'Location','eastoutside')
 
 % ============================================================
 % FUNCTION
