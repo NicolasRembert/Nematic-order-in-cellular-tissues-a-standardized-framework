@@ -36,7 +36,9 @@ cellTypeFolders = dir(mainFolder);
 cellTypeFolders = cellTypeFolders([cellTypeFolders.isdir] & ~ismember({cellTypeFolders.name},{'.','..'}));
 
 figure('Color','w'); hold on;
-%set(gcf,'Position',[300 100 600 600])
+
+legendHandles = [];
+legendNames = {};
 
 for i = 1:length(cellTypeFolders)
 
@@ -112,8 +114,11 @@ for i = 1:length(cellTypeFolders)
          'FaceAlpha',0.2, ...
          'EdgeColor','none');
 
-    % ligne moyenne uniquement
-    plot(x,y,'-','Color',col,'LineWidth',2);
+    % ===== LIGNE MOYENNE =====
+    h = plot(x,y,'-','Color',col,'LineWidth',2);
+
+    legendHandles(end+1) = h;
+    legendNames{end+1} = cellTypeName;
 end
 
 % remettre lignes au-dessus
@@ -135,6 +140,14 @@ set(gca,'FontSize',18,'LineWidth',2,'Box','off')
 
 pbaspect([1 1 1])
 grid off
+
+% ============================================================
+% LEGEND
+% ============================================================
+legend(legendHandles, legendNames, ...
+    'Location','eastoutside', ...
+    'FontSize',12, ...
+    'Box','off');
 
 % ============================================================
 % FUNCTION
