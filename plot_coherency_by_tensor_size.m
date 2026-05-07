@@ -9,8 +9,8 @@ set(groot,'defaultTextFontWeight','bold')
 % ============================================================
 % PATH
 % ============================================================
-mainFolder = 'Path to \Coherency data';
-searchSubfolders = false;
+mainFolder = 'path to \Coherency data';
+searchSubfolders = false; % Change to True if your csv are regrouped by subfolders example A02 -B02-C02 , to false if they are all in the cell type folder 
 
 % ============================================================
 % FAMILIES + COLORS
@@ -30,13 +30,14 @@ baseColors.Other       = [0.4940 0.1840 0.5560];
 colorMap = createColorMap(families, baseColors);
 
 % ============================================================
-% COHERENCY VS FEATURE SIZE
+% COHERENCY VS TENSOR SIZE
 % ============================================================
 cellTypeFolders = dir(mainFolder);
 cellTypeFolders = cellTypeFolders([cellTypeFolders.isdir] & ~ismember({cellTypeFolders.name},{'.','..'}));
 
 figure('Color','w'); hold on;
 
+% stockage pour légende
 legendHandles = [];
 legendNames = {};
 
@@ -51,18 +52,17 @@ for i = 1:length(cellTypeFolders)
         csvFiles = dir(fullfile(cellTypePath, '*.csv'));
     end
 
-    % clé = feature size, valeur = vecteur de moyennes de replicates
-    featureData = containers.Map('KeyType','double','ValueType','any');
+    % clé = tensor, valeur = vecteur de moyennes de replicates
+    tensorData = containers.Map('KeyType','double','ValueType','any');
 
     for j = 1:length(csvFiles)
 
         fname = csvFiles(j).name;
         fpath = fullfile(csvFiles(j).folder, fname);
 
-        % ===== EXTRAIRE FEATURE SIZE =====
-        tokens = regexp(fname, 'FeatureSize_(\d+)', 'tokens','once');
+        tokens = regexp(fname, 'Tensor_(\d+)', 'tokens','once');
         if isempty(tokens), continue; end
-        featureSize = str2double(tokens{1});
+        tensorSize = str2double(tokens{1});
 
         data = readmatrix(fpath);
         if size(data,2) < 7, continue; end
@@ -72,29 +72,29 @@ for i = 1:length(cellTypeFolders)
         % ===== MOYENNE PAR REPLICATE =====
         repMean = mean(coherency,'omitnan');
 
-        if isKey(featureData,featureSize)
-            featureData(featureSize) = [featureData(featureSize); repMean];
+        if isKey(tensorData,tensorSize)
+            tensorData(tensorSize) = [tensorData(tensorSize); repMean];
         else
-            featureData(featureSize) = repMean;
+            tensorData(tensorSize) = repMean;
         end
     end
 
-    if isempty(featureData), continue; end
+    if isempty(tensorData), continue; end
 
-    featureSizes = sort(cell2mat(keys(featureData)));
-    meanC = zeros(size(featureSizes));
-    semC  = zeros(size(featureSizes));
+    tensorSizes = sort(cell2mat(keys(tensorData)));
+    meanC = zeros(size(tensorSizes));
+    semC  = zeros(size(tensorSizes));
 
-    for k = 1:length(featureSizes)
+    for k = 1:length(tensorSizes)
 
-        vals = featureData(featureSizes(k));
+        vals = tensorData(tensorSizes(k)); % = replicates
 
         meanC(k) = mean(vals,'omitnan');
         semC(k)  = std(vals,'omitnan')/sqrt(numel(vals));
 
         % DEBUG
-        fprintf('%s | FeatureSize %d → nRep = %d\n', ...
-            cellTypeName, featureSizes(k), numel(vals));
+        fprintf('%s | Feature size %d → nRep = %d\n', ...
+            cellTypeName, tensorSizes(k), numel(vals));
     end
 
     key = lower(cellTypeName);
@@ -105,7 +105,7 @@ for i = 1:length(cellTypeFolders)
     end
 
     % ===== SHADOW SEM =====
-    x = featureSizes;
+    x = tensorSizes;
     y = meanC;
     e = semC;
 
@@ -115,17 +115,20 @@ for i = 1:length(cellTypeFolders)
          'FaceAlpha',0.2, ...
          'EdgeColor','none');
 
-    % ===== LIGNE MOYENNE =====
+    % ligne moyenne uniquement
     h = plot(x,y,'-','Color',col,'LineWidth',2);
 
+    % stockage pour la légende
     legendHandles(end+1) = h;
     legendNames{end+1} = cellTypeName;
+
 end
 
+% remettre lignes au-dessus
 uistack(findobj(gca,'Type','line'),'top')
 
 % ============================================================
-% AXES
+% AXES FIXES
 % ============================================================
 xlabel('Feature size (px)','FontSize',18)
 ylabel('Average coherency','FontSize',18)
@@ -144,10 +147,7 @@ grid off
 % ============================================================
 % LEGEND
 % ============================================================
-legend(legendHandles, legendNames, ...
-    'Location','eastoutside', ...
-    'FontSize',12, ...
-    'Box','off');
+legend(legendHandles, legendNames,'Location','best')
 
 % ============================================================
 % FUNCTION
