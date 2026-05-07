@@ -25,6 +25,146 @@
 
   %%%% ! ! ! ! ! ! 
 
+  % -------------------------------------------------------------------------
+% OUTPUT STRUCTURE FOR 1ST PART: Results_nematics
+%
+% This structure contains the results of the nematic analysis pipeline.
+% It groups the analysis parameters together with the measured quantities,
+% detected defects, and spatial nematic fields.
+%
+% PARAMETERS (scalars)
+%   FeatureSize       - Scalar. Feature size used in OrientationJ to compute
+%                       the local orientation field.
+%   Downsampling      - Scalar. Spatial downsampling factor applied to the
+%                       orientation field.
+%   OrderThreshold    - Scalar. Threshold applied to the local nematic order
+%                       parameter to filter low-order regions.
+%   MinOrderDistance  - Scalar. Minimum distance used in the computation of
+%                       the nematic order parameter.
+%
+% NUMERICAL RESULTS (vectors, one value per analyzed frame)
+%   CorrelationLength - Vector. Nematic correlation length extracted from
+%                       the spatial decay of orientation correlations.
+%   DefectDensity     - Vector. Density of topological defects in the field.
+%
+% DEFECT COUNTS (vectors, one value per frame)
+%   NumPositive       - Vector. Number of +1/2 defects.
+%   NumNegative       - Vector. Number of -1/2 defects.
+%   NumTotal          - Vector. Total number of detected defects.
+%
+% FIELDS (cell arrays, one element per analyzed frame)
+%   OrderParameter    - Cell array of matrices. Spatial map of the nematic
+%                       order parameter.
+%   DefectPositions   - Cell array of NxN matrices. Each row contains the
+%                       (x,y) coordinates of detected defects.
+%   DefectChargeField - Cell array of matrices. Matrix identifying defect
+%                       locations. Values are 0 everywhere except at defect
+%                       cores where +0.5 and -0.5 correspond to +1/2 and
+%                       -1/2 topological defects.
+%   OrientationField  - Cell array of matrices. Local nematic orientation
+%                       field (angle values).
+%   DefectOrientation - Cell array of vectors. Orientation of +1/2 defects.
+%
+% -------------------------------------------------------------------------
+
+% -------------------------------------------------------------------------
+% OUTPUT FILE: Data_dynamic.mat
+%
+% This file contains the results of the defect dynamics analysis.
+%
+% Variables are saved using the naming convention:
+%
+%   CellType_variable_replicate
+%
+% Example:
+%   RPE1_AllDist_1
+%
+% where:
+%   CellType   : name of the analyzed cell type
+%   variable   : measured quantity
+%   replicate  : index of the movie / experiment
+%
+% -------------------------------------------------------------------------
+% DEFECT DISTANCES
+%
+%   Same        - Distances between defects with the same topological charge
+%                 (+1/2 with +1/2, or -1/2 with -1/2).
+%
+%   Opposite    - Distances between defects with opposite charges
+%                 (+1/2 with -1/2).
+%
+%   AllDist     - All pairwise defect distances regardless of charge.
+%
+% -------------------------------------------------------------------------
+% DEFECT DENSITY
+%
+%   DefDensity  - Time series of defect density in the field of view.
+%
+% -------------------------------------------------------------------------
+% DEFECT TRAJECTORY STATISTICS
+%
+%   meanpos     - Mean time-averaged mean squared displacement (TAMSD)
+%                 computed over all +1/2 defects of a replicate.
+%
+%   meanneg     - Mean time-averaged mean squared displacement (TAMSD)
+%                 computed over all -1/2 defects of a replicate.
+%
+% -------------------------------------------------------------------------
+% DEFECT MOTION STATISTICS
+%
+%   meanparMSD  - Mean squared displacement parallel to the orientation
+%                 of +1/2 defects.
+%
+%   meanperpMSD - Mean squared displacement perpendicular to the
+%                 orientation of +1/2 defects.
+%
+%   meanMSAD    - Mean squared angular displacement of defect orientation.
+%
+% -------------------------------------------------------------------------
+% DEFECT VELOCITIES
+%
+%   posVel      - Instantaneous velocity magnitudes of +1/2 defects.
+%
+%   negVel      - Instantaneous velocity magnitudes of -1/2 defects.
+%
+% -------------------------------------------------------------------------
+% DEFECT DISPLACEMENTS
+%
+%   posDx,posDy - Frame-to-frame displacements of +1/2 defects along x and y.
+%
+%   negDx,negDy - Frame-to-frame displacements of -1/2 defects along x and y.
+%
+% -------------------------------------------------------------------------
+% DEFECT ORIENTATIONS
+%
+%   posPhi      - Orientation of +1/2 defects.
+%
+%   negPhi      - Orientation associated with -1/2 defects.
+%
+% -------------------------------------------------------------------------
+% DEFECT STRUCTURE
+%
+%   DefStruct   - Structure containing the full defect tracking data,
+%                 including defect positions, lifetimes, orientations,
+%                 velocities, and trajectory statistics.
+%
+% -------------------------------------------------------------------------
+% DEFECT PAIR ANALYSIS
+%
+%   posPairs            - Pair statistics for +1/2 defects. Computed as the
+%                         dot product between defect orientation vectors
+%                         aligned with the vector connecting the two defects.
+%
+%   pos_opposite_Pairs  - Same quantity computed for +1/2 and -1/2 defect pairs.
+%
+% -------------------------------------------------------------------------
+% DEFECT SHAPE
+%
+%   Defect_shape - Angular structure of the nematic field around defects.
+%                  Stored as {ThetaValues, PhiValues}.
+%
+% -------------------------------------------------------------------------
+
 
 
 addpath("Path to your \Functions")
@@ -139,6 +279,7 @@ for k = 1:length(subfolders)
 
     OrientationMat_list={};
     Phi_list={};
+    Results_nematics={};
 
 for numb = 1:length(file_paths)
 
@@ -150,7 +291,7 @@ for numb = 1:length(file_paths)
     %Here we remove the temporary variables relative to each field but we
     %keep the list of variables that we need to compare the different
     %csv files analyzed one after the others
-    clearvars -except  MaxDefect_disappearance maxDistance_tracking outputFile timePerPoint Merge_factor Neighbourhood_is_Downsampling S_threshold Pixel_size tif_names tif_paths Dynamic_analysis foldin Qmat2_list DummyMat_list DummyMat2_list fold foldname Mainsubdir k Phi_list OrientationMat_list numb file_paths file_names  MainDir subfolders subfolder_name subfolder_path Qparam_list Qmat_list linxcutlist expxcutlist Autocorr_list numalllist meanQlist tensorlist gridlist qtreshlist npointlist numneglist numposlist numalllist defectdenslist minorddistlist   Dir Exp_fit_list Exp_x_list meanCohelist;
+    clearvars -except  Results_nematics MaxDefect_disappearance maxDistance_tracking outputFile timePerPoint Merge_factor Neighbourhood_is_Downsampling S_threshold Pixel_size tif_names tif_paths Dynamic_analysis foldin Qmat2_list DummyMat_list DummyMat2_list fold foldname Mainsubdir k Phi_list OrientationMat_list numb file_paths file_names  MainDir subfolders subfolder_name subfolder_path Qparam_list Qmat_list linxcutlist expxcutlist Autocorr_list numalllist meanQlist tensorlist gridlist qtreshlist npointlist numneglist numposlist numalllist defectdenslist minorddistlist   Dir Exp_fit_list Exp_x_list meanCohelist;
     
    
     
@@ -784,6 +925,27 @@ end
 
     OrientationMat_list{numb}=OrientationMat;
     Phi_list{numb}=PHI;
+
+
+    %Structure that saves all the variables 
+
+Results_nematics.Parameters.FeatureSize = tensorlist;
+Results_nematics.Parameters.Downsampling = gridlist;
+Results_nematics.Parameters.OrderThreshold = qtreshlist;
+Results_nematics.Parameters.MinOrderDistance = minorddistlist;
+
+Results_nematics.Statistics.CorrelationLength = expxcut_list;
+Results_nematics.Statistics.DefectDensity = defectdenslist;
+
+Results_nematics.Defects.NumPositive = numposlist;
+Results_nematics.Defects.NumNegative = numneglist;
+Results_nematics.Defects.NumTotal = numalllist;
+
+Results_nematics.Fields.OrderParameter = Qparam_list;
+Results_nematics.Fields.DefectChargeField = Qmat_list;
+Results_nematics.Fields.OrientationField = OrientationMat_list;
+Results_nematics.Fields.DefectOrientation = Phi_list;
+
 
     
  
