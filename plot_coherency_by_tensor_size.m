@@ -10,7 +10,7 @@ set(groot,'defaultTextFontWeight','bold')
 % PATH
 % ============================================================
 mainFolder = 'Path to \Coherency data';
-searchSubfolders = false; % Change to True if your csv are regrouped by subfolders example A02 -B02-C02 , to false if they are all in the cell type folder 
+searchSubfolders = false;
 
 % ============================================================
 % FAMILIES + COLORS
@@ -30,7 +30,7 @@ baseColors.Other       = [0.4940 0.1840 0.5560];
 colorMap = createColorMap(families, baseColors);
 
 % ============================================================
-% COHERENCY VS TENSOR SIZE
+% COHERENCY VS FEATURE SIZE
 % ============================================================
 cellTypeFolders = dir(mainFolder);
 cellTypeFolders = cellTypeFolders([cellTypeFolders.isdir] & ~ismember({cellTypeFolders.name},{'.','..'}));
@@ -51,17 +51,18 @@ for i = 1:length(cellTypeFolders)
         csvFiles = dir(fullfile(cellTypePath, '*.csv'));
     end
 
-    % clé = tensor, valeur = vecteur de moyennes de replicates
-    tensorData = containers.Map('KeyType','double','ValueType','any');
+    % clé = feature size, valeur = vecteur de moyennes de replicates
+    featureData = containers.Map('KeyType','double','ValueType','any');
 
     for j = 1:length(csvFiles)
 
         fname = csvFiles(j).name;
         fpath = fullfile(csvFiles(j).folder, fname);
 
-        tokens = regexp(fname, 'Tensor_(\d+)', 'tokens','once');
+        % ===== EXTRAIRE FEATURE SIZE =====
+        tokens = regexp(fname, 'FeatureSize_(\d+)', 'tokens','once');
         if isempty(tokens), continue; end
-        tensorSize = str2double(tokens{1});
+        featureSize = str2double(tokens{1});
 
         data = readmatrix(fpath);
         if size(data,2) < 7, continue; end
@@ -71,29 +72,29 @@ for i = 1:length(cellTypeFolders)
         % ===== MOYENNE PAR REPLICATE =====
         repMean = mean(coherency,'omitnan');
 
-        if isKey(tensorData,tensorSize)
-            tensorData(tensorSize) = [tensorData(tensorSize); repMean];
+        if isKey(featureData,featureSize)
+            featureData(featureSize) = [featureData(featureSize); repMean];
         else
-            tensorData(tensorSize) = repMean;
+            featureData(featureSize) = repMean;
         end
     end
 
-    if isempty(tensorData), continue; end
+    if isempty(featureData), continue; end
 
-    tensorSizes = sort(cell2mat(keys(tensorData)));
-    meanC = zeros(size(tensorSizes));
-    semC  = zeros(size(tensorSizes));
+    featureSizes = sort(cell2mat(keys(featureData)));
+    meanC = zeros(size(featureSizes));
+    semC  = zeros(size(featureSizes));
 
-    for k = 1:length(tensorSizes)
+    for k = 1:length(featureSizes)
 
-        vals = tensorData(tensorSizes(k)); % = replicates
+        vals = featureData(featureSizes(k));
 
         meanC(k) = mean(vals,'omitnan');
         semC(k)  = std(vals,'omitnan')/sqrt(numel(vals));
 
-        % DEBUG (optionnel)
-        fprintf('%s | Tensor %d → nRep = %d\n', ...
-            cellTypeName, tensorSizes(k), numel(vals));
+        % DEBUG
+        fprintf('%s | FeatureSize %d → nRep = %d\n', ...
+            cellTypeName, featureSizes(k), numel(vals));
     end
 
     key = lower(cellTypeName);
@@ -104,7 +105,7 @@ for i = 1:length(cellTypeFolders)
     end
 
     % ===== SHADOW SEM =====
-    x = tensorSizes;
+    x = featureSizes;
     y = meanC;
     e = semC;
 
@@ -121,11 +122,10 @@ for i = 1:length(cellTypeFolders)
     legendNames{end+1} = cellTypeName;
 end
 
-% remettre lignes au-dessus
 uistack(findobj(gca,'Type','line'),'top')
 
 % ============================================================
-% AXES FIXES
+% AXES
 % ============================================================
 xlabel('Feature size (px)','FontSize',18)
 ylabel('Average coherency','FontSize',18)
