@@ -1,5 +1,39 @@
-% ==============================
-%  Master Script: Defect Analysis + Plotting
+
+% -------------------------------------------------------------------------
+% All computed quantities are saved in the MATLAB file:
+%   <mainFolderName>_radialMagnitude_neg/pos_avg.mat
+%
+% This file contains spatially averaged nematic and velocity fields
+% computed around detected topological defects.
+%
+% Saved variables:
+%
+%   Xq, Yq      - Coordinates of the interpolation grid used to compute
+%                 the averaged fields.
+%
+%   nematicMat  - Averaged nematic orientation field (angle in radians)
+%                 computed around defects on the interpolation grid.
+%
+%   velMat      - Averaged velocity vector field around defects.
+%
+%   magnMat     - Magnitude of the averaged velocity field.
+%
+%   divMat      - Divergence of the averaged velocity field.
+%
+%   avgDistPos,
+%   avgDistNeg  - Radial distance bins used to compute radial magnitude around
+%                 +1/2 and -1/2 defects.
+%
+%   avgMagPos,
+%   avgMagNeg   - Mean radial velocity magnitude as a function of distance
+%                 from +1/2 and -1/2 defects.
+%
+%   stdMagPos,
+%   stdMagNeg   - Standard deviation of the radial velocity magnitude
+%                 around +1/2 and -1/2 defects.
+%
+%   numdefanal  - Total number of defects used for the averaging.
+% -------------------------------------------------------------------------
 %  ==============================
 
 clear; clc; close all;
@@ -576,7 +610,7 @@ saveas(fig1, fullfile(output_dir,output_name_vel),'svg');
 
 
 % === Plot divergence map with nematic overlay ===
-output_name_nem = sprintf('%s_%s_defect_pos_divcolormap.svg', mainFolderName);
+output_name_nem = sprintf('%s_pos_divcolormap.svg', mainFolderName);
 
 fig2=figure; hold on;
 
