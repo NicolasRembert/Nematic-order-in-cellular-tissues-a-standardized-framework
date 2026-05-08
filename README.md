@@ -56,6 +56,8 @@ Velocity fields obtained with **PIVlab** are used to compute:
 
 ### Main scripts
 
+In each of these scritps, as well for the functions available, input/outputs are described as well as the different modifiable pathes, at the top of the file.
+
 **Python**
 
 `Generating vector fields on stitched.py`  
@@ -122,7 +124,7 @@ Overlap between adjacent PIV interrogation windows. Increasing overlap improves 
 
 ## Example datasets
 
-A small dataset is included in the repository **Confluence 48h cell data** to reproduce the **defect dynamics analysis**.
+A small dataset is included in the repository **Confluence 48h cell data** to reproduce the **defect dynamics analysis**. 
 
 ### Additional datasets
 
